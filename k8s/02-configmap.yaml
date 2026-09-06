@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: user-mgmt
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/postgres"
+  SPRING_DATASOURCE_USERNAME: "postgres"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "create"
+  JWT_ISSUER: "Spring"
+  JWT_EXPIRATION_MILLIS: "86400000"
+  POSTGRES_DB: "postgres"
+  POSTGRES_USER: "postgres"
+  NEXT_PUBLIC_API_URL: "http://backend:8080"
