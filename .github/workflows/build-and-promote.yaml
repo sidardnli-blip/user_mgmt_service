@@ -40,7 +40,7 @@ jobs:
       - name: Update image tag in values.yaml
         run: |
           cd ops-repo
-          sed -i "s|backend:.*|backend: ${{ secrets.DOCKERHUB_USERNAME }}/user-mgmt-service:${{ steps.vars.outputs.tag }}|" values.yaml
+          sed -i "s|^\(  backend: \)${{ secrets.DOCKERHUB_USERNAME }}/user-mgmt-service:.*|\1${{ secrets.DOCKERHUB_USERNAME }}/user-mgmt-service:${{ steps.vars.outputs.tag }}|" values.yaml
           cat values.yaml
 
       - name: Commit and push change to ops repo
