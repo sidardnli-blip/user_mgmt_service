@@ -89,6 +89,11 @@ jobs:
           token: ${{ secrets.OPS_REPO_TOKEN }}
           path: ops-repo
 
+      - name: Install yq
+        run: |
+          curl -sSL -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
       - name: Update image tags in values.yaml
         working-directory: ops-repo
         env:
@@ -96,8 +101,8 @@ jobs:
           BACKEND_TAG: ${{ needs.build-user-mgmt-service.outputs.tag }}
           MODULE_TAG: ${{ needs.build-module-service.outputs.tag }}
         run: |
-          sed -i "s|^  backend: .*|  backend: ${DOCKERHUB_USERNAME}/user-mgmt-service:${BACKEND_TAG}|" values.yaml
-          sed -i "s|^  moduleService: .*|  moduleService: ${DOCKERHUB_USERNAME}/module-service:${MODULE_TAG}|" values.yaml
+          yq -i '.images.backend = strenv(DOCKERHUB_USERNAME) + "/user-mgmt-service:" + strenv(BACKEND_TAG)' values.yaml
+          yq -i '.images.moduleService = strenv(DOCKERHUB_USERNAME) + "/module-service:" + strenv(MODULE_TAG)' values.yaml
           cat values.yaml
 
       - name: Commit and push change to ops repo
