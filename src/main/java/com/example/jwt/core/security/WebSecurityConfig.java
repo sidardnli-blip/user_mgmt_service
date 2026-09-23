@@ -2,6 +2,7 @@ package com.example.jwt.core.security;
 
 import com.example.jwt.core.security.helpers.JwtProperties;
 import com.example.jwt.domain.user.UserService;
+import jakarta.servlet.DispatcherType;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +45,12 @@ public class WebSecurityConfig {
         "/users/login".equals(request.getServletPath()) && HttpMethod.POST.matches(request.getMethod());
     return http
         .authorizeHttpRequests(requests -> requests
+            // Fehlerseiten duerfen gerendert werden, sonst wird aus 404/400 ein 403
+            .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+            // Health Checks und Prometheus Metriken (Aufgabe 1) ohne Login,
+            // liegen auf dem separaten Management Port 8081 und sind nicht via Ingress erreichbar
+            .requestMatchers("/actuator/health", "/actuator/health/**", "/actuator/prometheus",
+                "/actuator/info").permitAll()
             .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
             .anyRequest().authenticated())

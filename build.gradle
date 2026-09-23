@@ -21,6 +21,15 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '4.1.0-M3'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '4.1.0-M3'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '4.1.0-M3'
+
+    // Aufgabe 1: Actuator + Micrometer -> /actuator/prometheus
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '4.1.0-M3'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // Aufgabe 6: Retry + Circuit Breaker fuer die Aufrufe an den module_service
+    implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.4.0'
+    implementation 'io.github.resilience4j:resilience4j-retry:2.4.0'
+    implementation 'io.github.resilience4j:resilience4j-micrometer:2.4.0'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.10'
     implementation group: 'commons-validator', name: 'commons-validator', version: '1.10.1'
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.13.0'
